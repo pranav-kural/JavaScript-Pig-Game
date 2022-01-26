@@ -35,25 +35,35 @@ function switchCurrentPlayer() {
     // switch current player
     current_player = current_player === 0 ? 1 : 0;
     // add player--active to new current player
-    PLAYER_SECTION[current_player].classList.add('player--active');
-    
+    PLAYER_SECTION[current_player].classList.add('player--active');  
+}
+
+// update player score
+function updatePlayerScore() {
+    player_scores[current_player] += current_score;
+    // update DOM
+    PLAYER_SCORE[current_player].textContent = player_scores[current_player];
 }
 
 // game over once a play wins
 function gameOver() {
+    // update score
+    updatePlayerScore();
+    updateCurrentScore(0);
     // hide the dice
     DICE_EL.classList.add('hidden');
     // update message to show current player has won
     // hide roll dice and hold buttons
     BTN_ROLL.classList.add('hidden');
     BTN_HOLD.classList.add('hidden');
+    // update message
+    document.querySelector('.message').classList.remove('hidden');
+    document.querySelector('.message').textContent = `Player ${current_player+1}, wins! 🎉🍾`;
 }
 
 // hold button event handler
 BTN_HOLD.addEventListener('click', () => {
-    player_scores[current_player] += current_score;
-    // update DOM
-    PLAYER_SCORE[current_player].textContent = player_scores[current_player];
+    updatePlayerScore();
     updateCurrentScore(0);
     switchCurrentPlayer();
 });
@@ -70,6 +80,7 @@ BTN_ROLL.addEventListener('click', () => {
     //                         if score 100 after update, player wins, game over
     if (roll_value !== 1) {
         updateCurrentScore(roll_value);
+        if ((player_scores[current_player] + current_score) >= 50) gameOver();
     } else if (roll_value === 1) {
         // clear out current score
         updateCurrentScore(0);
