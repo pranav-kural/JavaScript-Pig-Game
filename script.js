@@ -21,6 +21,7 @@ const DICE_EL = document.querySelector('.dice');
 const BTN_NEW = document.querySelector('.btn--new');
 const BTN_ROLL = document.querySelector('.btn--roll');
 const BTN_HOLD = document.querySelector('.btn--hold');
+const MESSAGE = document.querySelector('.message');
 
 // update current score
 function updateCurrentScore(roll_value) {
@@ -57,8 +58,8 @@ function gameOver() {
     BTN_ROLL.classList.add('hidden');
     BTN_HOLD.classList.add('hidden');
     // update message
-    document.querySelector('.message').classList.remove('hidden');
-    document.querySelector('.message').textContent = `Player ${current_player+1}, wins! 🎉🍾`;
+    MESSAGE.classList.remove('hidden');
+    MESSAGE.textContent = `Player ${current_player+1}, wins! 🎉🍾`;
 }
 
 // hold button event handler
@@ -80,11 +81,31 @@ BTN_ROLL.addEventListener('click', () => {
     //                         if score 100 after update, player wins, game over
     if (roll_value !== 1) {
         updateCurrentScore(roll_value);
-        if ((player_scores[current_player] + current_score) >= 50) gameOver();
+        if ((player_scores[current_player] + current_score) >= 100) gameOver();
     } else if (roll_value === 1) {
         // clear out current score
         updateCurrentScore(0);
         // switch current player
         switchCurrentPlayer();
     }
+});
+
+// new button functionality
+BTN_NEW.addEventListener('click', () => {
+    // reset scores
+    current_player = 0;
+    current_score = 0;
+    player_scores[0] = 0;
+    player_scores[1] = 0;
+    PLAYER_SCORE[0].textContent = "0";
+    PLAYER_SCORE[1].textContent = "0";
+    // hide message
+    MESSAGE.classList.add('hidden');
+    DICE_EL.classList.add('hidden');
+    // display dice, roll and hold buttons
+    BTN_ROLL.classList.remove('hidden');
+    BTN_HOLD.classList.remove('hidden');
+    // update DOM
+    CURRENT_SCORE[0].textContent = "0";
+    CURRENT_SCORE[1].textContent = "0";
 });
