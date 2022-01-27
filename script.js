@@ -108,4 +108,7 @@ BTN_NEW.addEventListener('click', () => {
     // update DOM
     CURRENT_SCORE[0].textContent = "0";
     CURRENT_SCORE[1].textContent = "0";
+    // set player 1 as active player
+    PLAYER_SECTION[0].classList.add('player--active'); 
+    PLAYER_SECTION[1].classList.remove('player--active'); 
 });
